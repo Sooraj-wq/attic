@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickRide - Ride Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-black">
+                <span class="text-yellow-500">QuickRide</span>
+            </div>
+            <div class="space-x-6 text-gray-700">
+                <a href="/" class="hover:text-yellow-500">Home</a>
+                <a href="aboutus.html" class="hover:text-yellow-500">About us</a>
+                <a href="all-rides.html" class="hover:text-yellow-500">All Rides</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ride Details Section -->
+    <div class="container mx-auto px-4 py-24">
+        <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-8">
+            <h1 class="text-3xl font-bold mb-6 text-center text-yellow-500">Ride Details</h1>
+            
+            <div id="rideDetailsContainer" class="space-y-4">
+                <!-- Ride details will be dynamically inserted here -->
+            </div>
+
+            <div id="rideShareStatus" class="mt-4 text-center">
+                <p id="searchStatus" class="text-yellow-600 font-bold"></p>
+            </div>
+
+            <!-- Safety Alert Section -->
+            <div class="mt-6 bg-gray-100 p-4 rounded-lg">
+                <h2 class="text-xl font-bold mb-4 text-red-600">Safety Alert</h2>
+                <div class="flex space-x-4 mb-4">
+                    <input 
+                        type="tel" 
+                        id="emergencyContactInput" 
+                        placeholder="Enter Emergency Contact Number" 
+                        class="flex-grow p-2 border rounded"
+                    >
+                    <button 
+                        id="saveEmergencyContactBtn" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                        Save
+                    </button>
+                </div>
+                <button 
+                    id="emergencyAlertBtn" 
+                    class="w-full bg-red-600 text-white p-3 rounded hover:bg-red-700 transition duration-300 font-bold"
+                >
+                    🚨 EMERGENCY ALERT 🚨
+                </button>
+            </div>
+
+            <!-- Ride Tracking Section -->
+            <div id="rideTrackingSection" class="mt-6 bg-gray-50 p-4 rounded-lg">
+                <h2 class="text-xl font-bold mb-4 text-yellow-600">Ride Tracking</h2>
+                <div class="flex justify-between items-center">
+                    <p id="rideStatusText" class="text-gray-700">Ride in Progress</p>
+                    <button 
+                        id="completeRideBtn" 
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    >
+                        Complete Ride
+                    </button>
+                </div>
+            </div>
+
+            <div id="actionButtons" class="mt-8 flex justify-between hidden">
+                <button id="keepWaitingBtn" class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition duration-300">
+                    Keep Waiting
+                </button>
+                <button id="bookRideBtn" class="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition duration-300">
+                    Book Individual Ride
+                </button>
+                <button id="cancelRideBtn" class="bg-red-500 text-white py-2 px-6 rounded hover:bg-red-600 transition duration-300">
+                    Cancel Ride
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Alert Modal -->
+    <div id="emergencyAlertModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+            <h2 class="text-2xl font-bold mb-4 text-red-600">Emergency Alert Activated</h2>
+            <p id="emergencyModalMessage" class="mb-6">Your emergency contact has been notified. Help is on the way.</p>
+            <button id="closeEmergencyModalBtn" class="bg-red-500 text-white py-2 px-6 rounded hover:bg-red-600 transition duration-300">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+            <h2 class="text-2xl font-bold mb-4 text-green-600">Ride Booked Successfully!</h2>
+            <p class="mb-6">Your driver will be arriving shortly.</p>
+            <button id="closeModalBtn" class="bg-yellow-500 text-white py-2 px-6 rounded hover:bg-yellow-600 transition duration-300">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rideDetailsContainer = document.getElementById('rideDetailsContainer');
+            const searchStatus = document.getElementById('searchStatus');
+            const actionButtons = document.getElementById('actionButtons');
+            const keepWaitingBtn = document.getElementById('keepWaitingBtn');
+            const bookRideBtn = document.getElementById('bookRideBtn');
+            const cancelRideBtn = document.getElementById('cancelRideBtn');
+            const bookingModal = document.getElementById('bookingModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            // Safety Features
+            const emergencyContactInput = document.getElementById('emergencyContactInput');
+            const saveEmergencyContactBtn = document.getElementById('saveEmergencyContactBtn');
+            const emergencyAlertBtn = document.getElementById('emergencyAlertBtn');
+            const emergencyAlertModal = document.getElementById('emergencyAlertModal');
+            const closeEmergencyModalBtn = document.getElementById('closeEmergencyModalBtn');
+            const completeRideBtn = document.getElementById('completeRideBtn');
+            const rideStatusText = document.getElementById('rideStatusText');
+            const emergencyModalMessage = document.getElementById('emergencyModalMessage');
+
+            // Retrieve ride details from localStorage
+            const rideDetails = JSON.parse(localStorage.getItem('rideDetails'));
+
+            if (rideDetails) {
+                // Create HTML for ride details
+                rideDetailsContainer.innerHTML = `
+                    <div class="bg-gray-100 p-4 rounded">
+                        <p class="font-bold">From: <span class="font-normal">${rideDetails.from}</span></p>
+                        <p class="font-bold">To: <span class="font-normal">${rideDetails.to}</span></p>
+                        <p class="font-bold">Distance: <span class="font-normal">${rideDetails.distance} km</span></p>
+                        <p class="font-bold">Car Type: <span class="font-normal">${rideDetails.carType}</span></p>
+                        <p class="font-bold">Payment Method: <span class="font-normal">${rideDetails.paymentMethod}</span></p>
+                        <p id="costDisplay" class="font-bold text-xl mt-4 text-yellow-500">Total Cost: <span class="font-normal">₹${rideDetails.cost}</span></p>
+                    </div>
+                `;
+
+                // Ride sharing logic
+                let searchAttempts = 0;
+                const maxSearchAttempts = 4; // Initial + 3 additional attempts
+                let isRideShareFound = false;
+
+                function updateSearchStatus(message) {
+                    searchStatus.textContent = message;
+                }
+
+                function showActionButtons() {
+                    actionButtons.classList.remove('hidden');
+                }
+
+                async function findRideShare() {
+                    searchAttempts++;
+                    
+                    // Disable keep waiting button if max attempts reached
+                    if (searchAttempts >= maxSearchAttempts) {
+                        keepWaitingBtn.disabled = true;
+                        keepWaitingBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
+
+                    updateSearchStatus(`Finding passengers nearby to share your ride... (Attempt ${searchAttempts}/${maxSearchAttempts})`);
+
+                    // Fetch all rides from the database
+                    try {
+                        const response = await fetch('/allrides');
+                        const result = await response.json();
+                        const allRides = result.data || [];
+
+                        // Get current user's ride data from localStorage
+                        const currentUserId = localStorage.getItem('currentUserId');
+                        
+                        // Search for matching rides
+                        const matchingRides = allRides.filter(ride => 
+                            ride.uid !== currentUserId && // Not the same user
+                            ride.sct === rideDetails.carType && // Same car type
+                            ride.fl.toLowerCase() === rideDetails.from.toLowerCase() && // Same from location
+                            ride.dl.toLowerCase() === rideDetails.to.toLowerCase() // Same to location
+                        );
+
+                        setTimeout(() => {
+                            const foundRideShare = matchingRides.length > 0;
+
+                            if (foundRideShare) {
+                                isRideShareFound = true;
+                                // Reduce cost if ride share found
+                                const originalCost = rideDetails.cost;
+                                const reducedCost = Math.round(originalCost * 0.7); // 30% discount
+                                
+                                document.getElementById('costDisplay').innerHTML = 
+                                    `Total Cost: <span class="font-normal">₹${reducedCost}</span> <span class="text-green-600 ml-2">(Ride Share Discount Applied! ${matchingRides.length} passenger(s) matched)</span>`;
+                                
+                                updateSearchStatus(`Ride share found! ${matchingRides.length} passenger(s) matched successfully.`);
+                                showActionButtons();
+                                
+                                // Change button text to "Book Ride"
+                                bookRideBtn.textContent = 'Book Ride';
+                            } else if (searchAttempts < maxSearchAttempts) {
+                                // Reset button text to "Book Individual Ride"
+                                bookRideBtn.textContent = 'Book Individual Ride';
+                                
+                                showActionButtons();
+                                updateSearchStatus(`No passengers found in this area. Would you like to continue waiting? (Attempt ${searchAttempts}/${maxSearchAttempts})`);
+                            } else {
+                                showActionButtons();
+                                updateSearchStatus('Unable to find ride share after multiple attempts.');
+                            }
+                        }, 2000); // 2 seconds search time
+
+                    } catch (error) {
+                        console.error('Error fetching rides:', error);
+                        setTimeout(() => {
+                            showActionButtons();
+                            updateSearchStatus('Error searching for ride shares. Please try again.');
+                        }, 2000);
+                    }
+                }
+
+                // Start initial ride share search
+                findRideShare();
+
+                // Emergency Contact Saving
+                saveEmergencyContactBtn.addEventListener('click', function() {
+                    const emergencyNumber = emergencyContactInput.value.trim();
+                    if (emergencyNumber && /^\+?[0-9]{10,14}$/.test(emergencyNumber)) {
+                        localStorage.setItem('emergencyContact', emergencyNumber);
+                        alert('Emergency contact saved successfully!');
+                    } else {
+                        alert('Please enter a valid phone number');
+                    }
+                });
+
+                // Emergency Alert Functionality
+                emergencyAlertBtn.addEventListener('click', function() {
+                    const emergencyNumber = localStorage.getItem('emergencyContact');
+                    
+                    if (!emergencyNumber) {
+                        alert('Please save an emergency contact first');
+                        return;
+                    }
+
+                    // Simulate getting location
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+                        // Simulated WhatsApp Message Sending
+                        const whatsappMessage = encodeURIComponent(
+                            `🚨 EMERGENCY ALERT 🚨\n\n` +
+                            `I am in an emergency situation during my QuickRide.\n` +
+                            `My current location is: ${mapsLink}\n\n` +
+                            `Please help or contact local authorities immediately.`
+                        );
+
+                        // Simulated Phone Call Simulation
+                        const simulatedCall = confirm(`Simulating emergency call to ${emergencyNumber}. Proceed?`);
+
+                        if (simulatedCall) {
+                            // In a real app, this would trigger actual call and WhatsApp message
+                            window.open(`https://wa.me/${emergencyNumber}?text=${whatsappMessage}`, '_blank');
+                            
+                            emergencyModalMessage.textContent = 
+                                `Emergency alert sent via WhatsApp. Simulated call to ${emergencyNumber}. ` +
+                                `Location shared: ${mapsLink}`;
+                            emergencyAlertModal.classList.remove('hidden');
+                        }
+                    }, function() {
+                        alert('Unable to get location. Cannot send emergency alert.');
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
+                    });
+                });
+
+                // Close Emergency Modal
+                closeEmergencyModalBtn.addEventListener('click', function() {
+                    emergencyAlertModal.classList.add('hidden');
+                });
+
+                // Complete Ride Functionality
+                completeRideBtn.addEventListener('click', function() {
+                    rideStatusText.textContent = 'Ride Completed';
+                    completeRideBtn.disabled = true;
+                    completeRideBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    
+                    // Clear ride details
+                    localStorage.removeItem('rideDetails');
+                    
+                    // Optional: Add rating/feedback mechanism
+                    alert('Thank you for using QuickRide!');
+                });
+
+                // Keep Waiting Button
+                keepWaitingBtn.addEventListener('click', findRideShare);
+
+                // Book Ride Button
+                bookRideBtn.addEventListener('click', function() {
+                    bookingModal.classList.remove('hidden');
+                });
+
+                // Close Modal Button
+                closeModalBtn.addEventListener('click', function() {
+                    bookingModal.classList.add('hidden');
+                    localStorage.removeItem('rideDetails');
+                    window.location.href = '/';
+                });
+
+                // Cancel Ride Button
+                cancelRideBtn.addEventListener('click', function() {
+                    localStorage.removeItem('rideDetails');
+                    window.location.href = '/';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

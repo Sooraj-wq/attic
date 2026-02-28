@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKIPit! - Attendance Calculator</title>
+    <!-- Using Tailwind CSS via CDN for live preview -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Walter+Turncoat&display=swap" rel="stylesheet">
+    <style>
+        
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background-color: #878787;
+            border-radius: 9999px;
+            cursor: pointer;
+         }
+    </style>
+</head>
+
+<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex flex-col justify-center items-center p-4">
+
+    <h1 class="text-transparent bg-gradient-to-r from-black to-blue-900 bg-clip-text text-5xl md:text-6xl font-extrabold text-center">SKIPit!</h1>
+
+
+    <div class="main flex flex-col w-full max-w-lg h-auto md:w-[40em] p-6 md:p-4 justify-center items-center gap-4 rounded-[40px] mt-8 md:mt-[80px] shadow-[0_0_20px_rgb(0,0,0)] bg-black/75 backdrop-blur-[20px] text-white">
+        
+        <label for="start-date" class="text-white text-xl md:text-2xl font-sans">Semester start date</label>
+        <input type="date" id="start-date" name="calendar" class="text-gray-500 w-full md:w-[15em] h-[40px] bg-black border-0 rounded-[5px] px-[10px]">
+        
+        <label for="end-date" class="text-white text-xl md:text-2xl font-sans">Semester end date</label>
+        <input type="date" id="end-date" name="calendar" class="text-gray-500 w-full md:w-[15em] h-[40px] bg-black border-0 rounded-[5px] px-[10px]">
+        
+        <input type="text" placeholder="Current attendance percent" class="w-full md:w-[90%] h-[40px] rounded-[30px] border-0 outline-none bg-black text-white p-[2px] text-[14px] pl-[20px]">
+        <input type="text" placeholder="Extra leave hours" class="w-full md:w-[90%] h-[40px] rounded-[30px] border-0 outline-none bg-black text-white p-[2px] text-[14px] pl-[20px]">
+        <input type="text" placeholder="Extra working hours" class="w-full md:w-[90%] h-[40px] rounded-[30px] border-0 outline-none bg-black text-white p-[2px] text-[14px] pl-[20px]">
+        <input type="text" placeholder="Target percent" class="w-full md:w-[90%] h-[40px] rounded-[30px] border-0 outline-none bg-black text-white p-[2px] text-[14px] pl-[20px]">
+        
+        <div class="week-selector flex justify-center items-center gap-1">
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Monday">M</button>
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Tuesday">T</button>
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Wednesday">W</button>
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Thursday">T</button>
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Friday">F</button>
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Saturday">S</button>
+            <button class="weekday w-[40px] h-[40px] rounded-full border-0 bg-transparent text-white hover:bg-[hsl(261deg_80%_48%)] hover:shadow-[0_0_10px_hsl(261deg_80%_48%)]" id="Sunday">S</button>
+        </div>
+        
+        <button class="submit-btn px-[30px] py-[12px] rounded-[50px] cursor-pointer border-0 text-black bg-white shadow-[0_0_8px_rgba(0,0,0,0.05)] tracking-[1.5px] uppercase text-sm transition-all duration-500 ease-in-out hover:tracking-[3px] hover:bg-[hsl(261deg_80%_48%)] hover:text-[hsl(0,_0%,_100%)] hover:shadow-[0px_7px_29px_0px_rgb(93,24,220)] active:tracking-[3px] active:bg-[hsl(261deg_80%_48%)] active:text-[hsl(0,_0%,_100%)] active:shadow-[0_0_0_0_rgb(93,24,220)] active:transform active:translate-y-[10px] active:transition-all active:duration-[100ms]">Calculate!</button>
+
+    </div>
+    
+
+    <script src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "appId": "com.defense.voxguard",
+  "appName": "VoxGuard",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true,
+    "allowNavigation": [
+      "192.168.*.*",
+      "localhost",
+      "10.0.2.2"
+    ]
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}

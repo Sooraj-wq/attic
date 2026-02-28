@@ -1,0 +1,35 @@
+# Backend build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+uploads/
+venv/
+env/
+.pytest_cache/
+
+# Frontend build artifacts
+node_modules/
+dist/
+build/
+.vite/
+
+# Capacitor
+.capacitor/
+android/build/
+android/.gradle/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local

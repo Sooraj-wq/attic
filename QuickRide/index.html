@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickRide - Taxi Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-black">
+                <span class="text-yellow-500">QuickRide</span>
+            </div>
+            <div class="space-x-6 text-gray-700">
+                <a href="/" class="hover:text-yellow-500">Home</a>
+                <a href="aboutus.html" class="hover:text-yellow-500">About us</a>
+                <a href="all-rides.html" class="hover:text-yellow-500">All Rides</a>
+            </div>
+            <div class="flex items-center">
+                <span class="mr-2">📞</span>
+                <span>000</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative h-screen">
+        <!-- Background Image -->
+        <div class="absolute inset-0 bg-cover bg-center filter brightness-50" style="background-image: url('/api/placeholder/1920/1080');">
+        </div>
+
+        <div class="relative container mx-auto px-4 flex flex-col justify-center items-center h-full">
+            <div class="text-center mb-8">
+                <h2 class="text-5xl font-bold text-yellow-500 mb-4">Anytime, Anywhere</h2>
+                <p class="text-xl text-black">Shared and Individual trips, at your disposal</p>
+            </div>
+
+            <!-- Booking Form -->   
+            <div class="col-span-2 md:col-span-1">
+                <label class="block text-gray-700 mb-2">
+                    <span class="flex items-center">
+                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                        </svg>
+                        User ID: 
+                    </span>
+                </label>
+                <input type="text" id="userid" placeholder="Enter ID" class="w-full p-2 border rounded" required>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
+                <form id="bookingForm" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-gray-700 mb-2">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                </svg>
+                                From:
+                            </span>
+                        </label>
+                        <input type="text" id="fromLocation" placeholder="Pickup location" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-gray-700 mb-2">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                </svg>
+                                To:
+                            </span>
+                        </label>
+                        <input type="text" id="toLocation" placeholder="Destination" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-gray-700 mb-2">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z" />
+                                    <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z" />
+                                </svg>
+                                Phone number
+                            </span>
+                        </label>
+                        <input type="tel" id="phoneNumber" placeholder="Your phone" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-gray-700 mb-2">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+                                    <path fillRule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clipRule="evenodd" />
+                                </svg>
+                                Car type
+                            </span>
+                        </label>
+                        <select id="carType" class="w-full p-2 border rounded">
+                            <option>Select car type</option>
+                            <option value="suv">SUV</option>
+                            <option value="auto">Auto</option>
+                            <option value="sedan">Sedan</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-gray-700 mb-2">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                    <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                                </svg>
+                                Payment method
+                            </span>
+                        </label>
+                        <select id="paymethod" class="w-full p-2 border rounded">
+                            <option value="">Select payment</option>
+                            <option value="cash">Cash</option>
+                            <option value="upi">UPI</option>
+                            <option value="googlepay">Google Pay</option>
+                            <option value="applepay">Apple Pay</option>
+                        </select>
+                    </div>
+                    <div class="col-span-4">
+                        <button type="submit" id="order-now" class="w-full bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition duration-300">
+                            Order taxi now
+                        </button>
+                    </div>
+                    <div class="col-span-4">
+                        <button id="delete" class="w-full bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition duration-300">
+                            Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="home.js"></script>
+</body>
+</html>
